@@ -9,7 +9,7 @@ The purpose of this project is to produce a star-schema with a fact table to pro
 The following project contains an ETL process to create and populate a PostgreSQL database using Python from some JSON log files. The ETL pipeline will process the songs data and user activity data from the log files and populate the various dimension tables, then finally populate the fact table to produce analytical data for the music streaming application.
 
 ## Run the ETL process
-Run the following two files using the python3 command (python can also be used but for the further of this project python3 was used): 
+Run the following two files using the python3 command (python can also be used but for the purpose of this project python3 was used): 
 ```
 python3 create_tables.py
 python3 etl.py
