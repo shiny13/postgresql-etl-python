@@ -1,7 +1,7 @@
 # PostgreSQL ETL Process with Python
 
 ## Purpose 
-A startup called Sparkify wants to analyze data for their music streaming app which produces a lot of data in log file format. They want to analyze mainly what songs the users listen to but they don't have an easy query for their data. Their data exists as logs user activity logs and JSON metadata on the songs. 
+A startup called Sparkify wants to analyze data for their music streaming app which produces a lot of data in log file format. They want to analyze mainly what songs the users listen to but they don't have an easy query for their data. Their data exists as logs: user activity logs and JSON metadata on the songs. 
 
 The purpose of this project is to produce a star-schema with a fact table to produce simple queries to analyse user's information associated with songs and albums and multiple dimension table which contain further details from the fact table. 
 
