@@ -6,38 +6,80 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """Read a song file and
+    insert data to songs and artists tables
+    Args:
+        cur (psycopg2.cursor): The psycopg2 cursor
+        filepath (str): The location of the song file
+    """
     # open song file
-    df = 
-
-    # insert song record
-    song_data = 
-    cur.execute(song_table_insert, song_data)
+    df = pd.read_json(filepath, lines=True)
+    df['year'] = df['year'].apply(lambda x: x if x != 0 else None)
+    df = df.replace({pd.np.nan: None, "": None})
     
+    # insert song record
+    song_data = df[[
+        'song_id',
+        'title',
+        'artist_id',
+        'year',
+        'duration'
+    ]].values[0].tolist()
+    cur.execute(song_table_insert, song_data)
+
     # insert artist record
-    artist_data = 
+    artist_data = df[[
+        'artist_id',
+        'artist_name',
+        'artist_location',
+        'artist_latitude',
+        'artist_longitude'
+    ]].values[0].tolist()
     cur.execute(artist_table_insert, artist_data)
 
 
 def process_log_file(cur, filepath):
+    """Read a log file and
+        insert data to time, users and songplays tables
+    Args:
+        cur (psycopg2.cursor): The psycopg2 cursor
+        filepath (str): The location of the log file
+    """
     # open log file
-    df = 
+    df = pd.read_json(filepath, lines=True)
 
     # filter by NextSong action
-    df = 
+    df = df[df['page'] == 'NextSong']
 
     # convert timestamp column to datetime
-    t = 
-    
+    t = pd.to_datetime(df['ts'], unit='ms')
+
     # insert time data records
-    time_data = 
-    column_labels = 
-    time_df = 
+    time_data = pd.concat([
+        t,
+        t.dt.hour,
+        t.dt.day,
+        t.dt.week,
+        t.dt.month,
+        t.dt.year,
+        t.dt.weekday], axis=1)
+    column_labels = [
+        'start_time',
+        'hour',
+        'day',
+        'week',
+        'month',
+        'year',
+        'weekday'
+    ]
+    time_df = pd.DataFrame(data=time_data.values, columns=column_labels)
+
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
     # load user table
-    user_df = 
+    user_df = df[['userId', 'firstName', 'lastName', 'gender', 'level']]
 
     # insert user records
     for i, row in user_df.iterrows():
@@ -51,7 +93,7 @@ def process_log_file(cur, filepath):
         songid, artistid = results if results else None, None
 
         # insert songplay record
-        songplay_data = 
+        songplay_data = (pd.to_datetime(row.ts, unit='ms'), row.userId, row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 

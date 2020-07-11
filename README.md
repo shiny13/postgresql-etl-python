@@ -1,7 +1,24 @@
 # PostgreSQL ETL Process with Python
 
+## Purpose 
+A startup called Sparkify wants to analyze data for their music streaming app which produces a lot of data in log file format. They want to analyze mainly what songs the users listen to but they don't have an easy query for their data. Their data exists as logs user activity logs and JSON metadata on the songs. 
+
+The purpose of this project is to produce a star-schema with a fact table to produce simple queries to analyse user's information associated with songs and albums and multiple dimension table which contain further details from the fact table. 
+
 ## Proejct description
-The following project contains an ETL process to create and populate a PostgreSQL database using Python from some JSON log files. 
+The following project contains an ETL process to create and populate a PostgreSQL database using Python from some JSON log files. The ETL pipeline will process the songs data and user activity data from the log files and populate the various dimension tables, then finally populate the fact table to produce analytical data for the music streaming application.
+
+## Run the ETL process
+Run the following two files using the python3 command (python can also be used but for the further of this project python3 was used): 
+```
+python3 create_tables.py
+python3 etl.py
+```
+
+## File description
+- create_tables.py: Clean previous schema and creates tables.
+- sql_queries.py: All queries used in the ETL pipeline.
+- etl.py: Read JSON logs and JSON metadata and load the data into generated tables.
 
 ### Schema description
 **Fact Table**
@@ -26,13 +43,3 @@ artist_id, name, location, latitude, longitude
 ```
 start_time, hour, day, week, month, year, weekday
 ```
-
-### File description
-The sql_queries.py file is responsible for declaring the raw SQL statements for creating the tables' schema, insert statements, and select queries.
-
-the create_tables.py file contain python functions responsible to call the database to execute all the queries defined in the sql_queries.py file.
-
-The etl.py file contains python functions to pull data from the source to populate the PostgreSQL tables.
-
-You may use Jupyter notebook to execute the etl.ipynb file to call all the python files to execute them and the test.ipynb fiel for testing. 
-
