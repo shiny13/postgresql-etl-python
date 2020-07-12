@@ -44,5 +44,5 @@ artist_id, name, location, latitude, longitude
 start_time, hour, day, week, month, year, weekday
 ```
 
-**Entity Relationship Diagram**
+### Entity Relationship Diagram
 <img src="/project1_etl_erd.png" alt="ETL Pipeline ER Diagram"/>
