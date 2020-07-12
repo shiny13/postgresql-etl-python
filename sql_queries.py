@@ -14,19 +14,21 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 # CREATE TABLES
 
 songplay_table_create = ("CREATE TABLE IF NOT EXISTS songplays \
-                        (songplay_id serial PRIMARY KEY, start_time varchar, \
-                        user_id int, level varchar, song_id varchar, artist_id varchar, \
-                        session_id int, location varchar, user_agent varchar);")
+                        (songplay_id serial PRIMARY KEY, start_time varchar not null, \
+                        user_id int not null, level varchar, song_id varchar, \
+                        artist_id varchar, session_id int not null, \
+                        location varchar, user_agent varchar);")
 
 user_table_create = ("CREATE TABLE IF NOT EXISTS users (user_id serial PRIMARY KEY, \
                         first_name varchar, last_name varchar, \
                         gender varchar, level varchar);")
 
 song_table_create = ("CREATE TABLE IF NOT EXISTS songs (song_id varchar PRIMARY KEY, \
-                    title varchar, artist_id varchar, year int, duration numeric);")
+                    title varchar not null, artist_id varchar not null, \
+                    year int, duration numeric);")
 
 artist_table_create = ("CREATE TABLE IF NOT EXISTS artists \
-                        (artist_id varchar PRIMARY KEY, name varchar, \
+                        (artist_id varchar PRIMARY KEY, name varchar not null, \
                         location varchar, latitude numeric, longitude numeric);")
 
 time_table_create = ("CREATE TABLE IF NOT EXISTS time (\
@@ -43,7 +45,7 @@ songplay_table_insert = ("INSERT INTO songplays (start_time, user_id, level, \
 user_table_insert = ("INSERT INTO users (user_id, first_name, last_name, \
                         gender, level) \
                         VALUES (%s, %s, %s, %s, %s) \
-                        ON CONFLICT (user_id) DO NOTHING;")
+                        ON CONFLICT (user_id) DO UPDATE set level = EXCLUDED.level;")
 
 song_table_insert = ("INSERT INTO songs (song_id, title, \
                         artist_id, year, duration) \
